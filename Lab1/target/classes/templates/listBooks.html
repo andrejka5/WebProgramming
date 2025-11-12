@@ -27,6 +27,13 @@
     .error {
       color:red;
     }
+    a.button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 5px 10px;
+      text-decoration: none;
+      border-radius: 5px;
+    }
   </style>
 </head>
 <body>
@@ -34,15 +41,29 @@
   <h1>Welcome to our Book Reservation App</h1>
 </header>
 <main>
+  <h2>Books List</h2>
+  <a class="button" th:href="@{/books/book-form}">Add New Book</a>
+  <ul>
+    <li th:each="elem: ${books}">
+      <span th:text="${elem.title + ' - ' + elem.genre + ', Rating: ' + elem.averageRating + ', Author: ' + elem.author.name + ' ' + elem.author.surname}"></span>
+
+      <a class="button" th:href="@{'/books/book-form/'+${elem.id}}">Edit</a>
+
+      <form th:action="@{'/books/delete/'+${elem.id}}" method="post" style="display:inline">
+        <button type="submit" class="button">Delete</button>
+      </form>
+    </li>
+  </ul>
   <form th:action="@{/bookReservation}" method="POST">
     <h2>Choose a book:</h2>
     <ul>
       <li th:each="elem: ${books}">
         <input class="book-option" th:value="${elem.getTitle()}" name="bookTitle"
-               th:text="${'Title: '+elem.getTitle()+', Genre: '+elem.getGenre()+', Rating: '+elem.getAverageRating()}"
+               th:text="${'Title: '+elem.getTitle()+', Genre: '+elem.getGenre()+', Rating: '+elem.getAverageRating()+', Author: '+elem.getAuthor().getName()+' '+elem.getAuthor().getSurname()}"
                type="radio">
       </li>
     </ul>
+
     <h2>Enter your information:</h2>
     <label for="readerName">Your Name:</label>
     <input id="readerName" type="text" name="readerName" required><br/>
@@ -57,7 +78,7 @@
     <input type="submit" value="Reserve Book">
   </form>
   <div>
-    <form th:method="POST" th:action="@{/}">
+    <form th:method="POST" th:action="@{/books}">
       <h2>Enter search information:</h2>
       <label for="title">Book Title:</label>
       <input id="title" type="text" name="titles"><br/>

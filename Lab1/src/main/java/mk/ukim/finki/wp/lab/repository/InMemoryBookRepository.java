@@ -19,4 +19,23 @@ public class InMemoryBookRepository implements BookRepository {
                 .filter(book -> book.getTitle().contains(text)
                         && book.getAverageRating() >= rating).toList();
     }
+    @Override
+    public Book save(Book book) {
+        DataHolder.books.add(book);
+        return book;
+    }
+    @Override
+    public Book update(Book book) {
+        for(int i=0;i<DataHolder.books.size();i++) {
+            if(DataHolder.books.get(i).getId().equals(book.getId())) {
+                DataHolder.books.set(i, book);
+                return book;
+            }
+        }
+        return null;
+    }
+    @Override
+    public void delete(Long id) {
+        DataHolder.books.removeIf(book -> book.getId().equals(id));
+    }
 }
