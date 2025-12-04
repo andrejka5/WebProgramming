@@ -1,0 +1,17 @@
+package mk.ukim.finki.wp.lab.service;
+
+import mk.ukim.finki.wp.lab.model.Book;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BookService {
+    List<Book> listAll();
+    List<Book> searchBooks(String text, Double rating);
+    Book save(Book book);
+    Book update(Book book);
+    void delete(Long id);
+    Optional<Book> findById(Long id);
+    public List<Book> listByAuthor(Long authorId);
+    Optional<Book> findByTitle(String title);
+}
